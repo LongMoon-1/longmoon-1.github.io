@@ -2,32 +2,29 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>翻译工具</title>
-    <!-- Font Awesome 6 免费图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
             background-color: #0f0f0f;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px;
         }
 
-        /* 主容器 */
         .translate-container {
             width: 100%;
             max-width: 1400px;
-            height: 100%;
             background-color: #121217;
             display: flex;
             flex-direction: column;
@@ -35,6 +32,24 @@
             overflow: hidden;
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
             border: 1px solid #2a2a32;
+        }
+
+        /* PC端固定高度 */
+        @media (min-width: 761px) {
+            .translate-container {
+                height: 90vh;
+            }
+        }
+
+        /* 手机端高度自适应，允许滚动 */
+        @media (max-width: 760px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+            }
+            .translate-container {
+                margin: 8px 0;
+            }
         }
 
         /* 头部 */
@@ -47,16 +62,13 @@
             background-color: #0f0f14;
             flex-wrap: wrap;
             gap: 12px;
+            flex-shrink: 0;
         }
 
-        /* 标题 + 可点击解锁调试 (无任何提示) */
         .clickable-title {
             cursor: pointer;
             user-select: none;
             transition: opacity 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
         .clickable-title:hover {
             opacity: 0.8;
@@ -72,7 +84,6 @@
             color: #4a9eff;
         }
 
-        /* 右上角版权 @LongMoon */
         .copyright-right {
             display: flex;
             align-items: center;
@@ -104,34 +115,37 @@
             gap: 12px;
         }
 
-        /* 调试按钮 - 默认置灰 */
+        /* 调试按钮 - 未激活时明显置灰 */
         .debug-btn {
-            background-color: #2b5278;
-            color: white;
+            background-color: #4a4a5a;
+            color: #aaa;
             border: none;
             padding: 8px 20px;
             border-radius: 40px;
             font-size: 0.9rem;
-            cursor: pointer;
+            cursor: default;
             transition: 0.2s;
-            opacity: 0.5;
+            opacity: 0.7;
             pointer-events: none;
         }
         .debug-btn.active {
+            background-color: #2b5278;
+            color: white;
             opacity: 1;
             pointer-events: auto;
+            cursor: pointer;
         }
         .debug-btn.active:hover {
             background-color: #366b9e;
         }
 
-        /* 双栏工作区 */
+        /* 双栏工作区 - PC端row，手机端column */
         .translation-workspace {
             flex: 1;
             padding: 24px;
             display: flex;
             gap: 24px;
-            overflow: hidden;
+            overflow: auto;
             min-height: 0;
         }
 
@@ -144,15 +158,14 @@
             border-radius: 24px;
             border: 1px solid #2a2a33;
             overflow: hidden;
+            min-width: 0;
         }
 
         .panel-header {
             padding: 14px 20px;
             background-color: #20202a;
             border-bottom: 1px solid #2c2c36;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-shrink: 0;
         }
 
         .lang-selector {
@@ -173,12 +186,12 @@
             cursor: pointer;
             outline: none;
         }
-        .lang-selector select:hover { border-color: #6c8fb0; }
 
         .source-textarea {
             flex: 1;
             background-color: #13131a;
             padding: 18px;
+            overflow: auto;
         }
         .source-textarea textarea {
             width: 100%;
@@ -192,7 +205,9 @@
             outline: none;
             font-family: inherit;
         }
-        .source-textarea textarea::placeholder { color: #4a4a5a; }
+        .source-textarea textarea::placeholder {
+            color: #4a4a5a;
+        }
 
         .target-result {
             flex: 1;
@@ -223,6 +238,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
+            flex-shrink: 0;
         }
         .mode-selector {
             display: flex;
@@ -264,7 +280,6 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -278,7 +293,7 @@
             background: transparent;
             border: 1px solid #4a6a8a;
             color: #bbd4ff;
-            padding: 8px 20px;
+            padding: 8px 22px;
             border-radius: 40px;
             font-size: 0.9rem;
             font-weight: 500;
@@ -304,6 +319,12 @@
             align-items: center;
             gap: 6px;
         }
+        .clear-btn:hover {
+            border-color: #666;
+            color: #ddd;
+        }
+
+        /* 加载动画 */
         .translate-spinner {
             display: none;
             width: 16px;
@@ -313,10 +334,13 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin-left: 4px;
+            flex-shrink: 0;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        /* ========= 全屏调试界面 - 无AI头像，思考动画为单点 ========= */
+        /* 全屏调试界面 */
         .debug-fullscreen {
             position: fixed;
             top: 0;
@@ -327,7 +351,7 @@
             z-index: 5000;
             display: none;
             flex-direction: column;
-            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-family: 'SF Mono', 'Fira Code', monospace;
         }
         .debug-header {
             padding: 16px 24px;
@@ -336,28 +360,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
         .debug-header h3 {
             color: #9cdcfe;
             font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
             font-family: monospace;
-        }
-        .debug-header h3 i {
-            margin-right: 8px;
-            color: #569cd6;
         }
         .debug-close {
             background: #1e1f2c;
             border: none;
             color: #bbb;
-            font-size: 1.2rem;
             width: 32px;
             height: 32px;
             border-radius: 8px;
             cursor: pointer;
-            font-family: monospace;
         }
         .debug-messages {
             flex: 1;
@@ -367,13 +384,11 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
-            font-family: monospace;
         }
         .debug-message {
             display: flex;
             gap: 12px;
             max-width: 90%;
-            font-family: monospace;
         }
         .debug-user {
             align-self: flex-end;
@@ -382,11 +397,9 @@
         .debug-ai {
             align-self: flex-start;
         }
-        /* 调试界面AI头像已完全删除，只保留消息气泡 */
         .debug-avatar {
             display: none;
         }
-        /* 用户消息保留一个小图标以示区分（可选，但不是AI头像） */
         .debug-user .debug-avatar {
             display: flex;
             width: 28px;
@@ -395,44 +408,33 @@
             border-radius: 6px;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
-        }
-        .debug-user .debug-avatar i {
-            color: white;
         }
         .debug-bubble {
             padding: 8px 14px;
             border-radius: 12px;
             font-size: 0.85rem;
             line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-family: monospace;
             background: #14161e;
             border: 1px solid #2a2e3a;
             color: #e2e8ff;
+            word-break: break-word;
         }
         .debug-user .debug-bubble {
             background: #1e3a5f;
             border-color: #2b5a8c;
-            color: white;
         }
         .debug-time {
             font-size: 0.6rem;
             color: #6b7280;
             margin-top: 4px;
-            font-family: monospace;
         }
-        /* 思考动画：改为一个点 (pulse) */
         .debug-thinking {
-            padding: 8px 14px;
+            padding: 8px 16px;
             background: #14161e;
             border-radius: 12px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #2a2e3a;
-            min-width: 40px;
         }
         .debug-dot-single {
             width: 8px;
@@ -449,6 +451,7 @@
             padding: 16px;
             background: #0a0c10;
             border-top: 1px solid #1e2128;
+            flex-shrink: 0;
         }
         .debug-input-row {
             display: flex;
@@ -477,6 +480,7 @@
             border-radius: 10px;
             cursor: pointer;
         }
+
         .custom-toast {
             position: fixed;
             bottom: 30px;
@@ -485,7 +489,7 @@
             background: #1e2a3a;
             backdrop-filter: blur(8px);
             color: #eaf4ff;
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 40px;
             font-size: 0.85rem;
             z-index: 6000;
@@ -495,12 +499,64 @@
             border: 1px solid #4a9eff;
             animation: fadeUp 2s forwards;
             pointer-events: none;
+            white-space: nowrap;
         }
         @keyframes fadeUp {
             0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
             15% { opacity: 1; transform: translateX(-50%) translateY(0); }
             85% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; visibility: hidden; }
+        }
+
+        /* 手机端适配 */
+        @media (max-width: 760px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+            }
+            .translate-container {
+                margin: 8px 0;
+                border-radius: 24px;
+            }
+            .translation-workspace {
+                flex-direction: column;
+                gap: 16px;
+                padding: 16px;
+                overflow: visible;
+            }
+            .source-panel, .target-panel {
+                min-height: auto;
+                max-height: none;
+            }
+            .source-textarea {
+                min-height: 200px;
+            }
+            .target-result {
+                min-height: 200px;
+            }
+            .tool-header {
+                padding: 12px 16px;
+            }
+            .header-left h1 {
+                font-size: 1.2rem;
+            }
+            .mode-btn {
+                padding: 5px 16px;
+                font-size: 0.8rem;
+            }
+            .primary-btn, .copy-transparent-btn, .clear-btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .debug-btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .custom-toast {
+                white-space: normal;
+                text-align: center;
+                max-width: 85%;
+            }
         }
     </style>
 </head>
@@ -513,7 +569,7 @@
             </div>
         </div>
         <div class="header-actions">
-            <div class="copyright-right" title="未经授权禁止转载 · 盗用必究">
+            <div class="copyright-right" id="copyrightBtn">
                 <i class="fas fa-copyright"></i>
                 <span>@LongMoon</span>
             </div>
@@ -539,7 +595,7 @@
                 </div>
             </div>
             <div class="source-textarea">
-                <textarea id="srcText" placeholder="输入要翻译的文字...&#10;"></textarea>
+                <textarea id="srcText" placeholder="输入要翻译的文字..."></textarea>
             </div>
         </div>
         <div class="target-panel">
@@ -577,7 +633,7 @@
     </div>
 </div>
 
-<!-- 全屏调试界面 - 无AI头像，思考动画为一个点 -->
+<!-- 全屏调试界面 -->
 <div id="debugFullscreen" class="debug-fullscreen">
     <div class="debug-header">
         <h3><i class="fas fa-terminal"></i> DEBUG CONSOLE</h3>
@@ -586,7 +642,7 @@
     <div id="debugMessages" class="debug-messages"></div>
     <div class="debug-input-area">
         <div class="debug-input-row">
-            <textarea id="debugInput" class="debug-input" placeholder="$ 输入调试命令 / 对话..." rows="1"></textarea>
+            <textarea id="debugInput" class="debug-input" placeholder="$ 输入命令 / 对话..." rows="1"></textarea>
             <button id="debugSendBtn" class="debug-send"><i class="fas fa-arrow-up"></i></button>
         </div>
     </div>
@@ -594,7 +650,6 @@
 
 <script>
     (function() {
-        // ---------- 智谱AI 固定配置 ----------
         const ZHIPU_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
         const FIXED_API_KEY = '20252a487bf4433dae034e4607626ff6.IZtAmpkRKydep2YR';
         const DEBUG_PASSWORD = '114514';
@@ -604,7 +659,6 @@
         let currentMode = 'fast';
         let debugEnabled = false;
 
-        // DOM 元素
         const srcLangSelect = document.getElementById('srcLangSelect');
         const tgtLangSelect = document.getElementById('tgtLangSelect');
         const srcText = document.getElementById('srcText');
@@ -618,13 +672,13 @@
         const translateSpinner = document.getElementById('translateSpinner');
         const debugBtn = document.getElementById('debugBtn');
         const titleTrigger = document.getElementById('titleDebugTrigger');
+        const copyrightBtn = document.getElementById('copyrightBtn');
         const debugFullscreen = document.getElementById('debugFullscreen');
         const debugCloseBtn = document.getElementById('debugCloseBtn');
         const debugMessagesDiv = document.getElementById('debugMessages');
         const debugInput = document.getElementById('debugInput');
         const debugSendBtn = document.getElementById('debugSendBtn');
 
-        // Toast 提示
         function showToast(msg, isError = false) {
             const old = document.querySelector('.custom-toast');
             if (old) old.remove();
@@ -635,26 +689,39 @@
             setTimeout(() => toast.remove(), 2000);
         }
 
-        // 复制结果 (图标变勾 1.5秒)
+        function showCopyright() {
+            const old = document.querySelector('.custom-toast');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.innerHTML = `<i class="fas fa-copyright"></i> © 2025 LongMoon · 未经授权禁止转载或盗用代码`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
         async function handleCopy() {
-            const resultDiv = targetResult;
             let text = '';
-            if (resultDiv.querySelector('.placeholder-result') && (!resultDiv.innerText || resultDiv.innerText.includes('翻译结果将显示在这里'))) {
+            if (targetResult.querySelector('.placeholder-result') && 
+                (!targetResult.innerText || targetResult.innerText.includes('翻译结果将显示在这里'))) {
                 showToast('没有可复制的内容', true);
                 return;
             }
-            text = resultDiv.innerText.trim();
-            if (!text || text === '翻译结果将显示在这里') { showToast('暂无翻译结果', true); return; }
+            text = targetResult.innerText.trim();
+            if (!text || text === '翻译结果将显示在这里') {
+                showToast('暂无翻译结果', true);
+                return;
+            }
             try {
                 await navigator.clipboard.writeText(text);
                 const oldClass = copyIcon.className;
                 copyIcon.className = 'fas fa-check';
                 showToast('复制成功');
                 setTimeout(() => { copyIcon.className = oldClass; }, 1500);
-            } catch(e) { showToast('复制失败', true); }
+            } catch(e) {
+                showToast('复制失败', true);
+            }
         }
 
-        // ========= 全屏调试界面（无AI头像，单点动画） =========
         function debugGetTime() {
             const d = new Date();
             return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
@@ -662,13 +729,7 @@
         function debugAppendUser(msg) {
             const div = document.createElement('div');
             div.className = 'debug-message debug-user';
-            div.innerHTML = `
-                <div class="debug-avatar"><i class="fas fa-user"></i></div>
-                <div style="max-width:calc(100% - 44px)">
-                    <div class="debug-bubble">${escapeHtml(msg)}</div>
-                    <div class="debug-time">${debugGetTime()}</div>
-                </div>
-            `;
+            div.innerHTML = `<div class="debug-avatar"><i class="fas fa-user"></i></div><div style="max-width:calc(100% - 44px)"><div class="debug-bubble">${escapeHtml(msg)}</div><div class="debug-time">${debugGetTime()}</div></div>`;
             debugMessagesDiv.appendChild(div);
             debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
         }
@@ -681,10 +742,8 @@
             thinkDiv.innerHTML = `<div class="debug-bubble debug-thinking"><div class="debug-dot-single"></div></div>`;
             debugMessagesDiv.appendChild(thinkDiv);
             debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
-            thinkDiv.classList.add('debug-thinking-item');
         }
-        let debugStreamingDiv = null;
-        let debugStreamingContent = null;
+        let debugStreamingDiv = null, debugStreamingContent = null;
         function debugCreateStreaming() {
             if (debugStreamingDiv && debugStreamingDiv.isConnected) return;
             debugStreamingDiv = document.createElement('div');
@@ -703,7 +762,6 @@
             debugStreamingContent = null;
         }
 
-        // 智谱流式调用 (共用)
         async function callZhipuStream(prompt, onDelta, signal) {
             const resp = await fetch(ZHIPU_API_URL, {
                 method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${FIXED_API_KEY}`},
@@ -748,12 +806,12 @@
 
         async function performTranslation() {
             const src = srcText.value.trim();
-            if(!src) { showToast('请输入要翻译的文字',true); return; }
+            if(!src) { showToast('请输入要翻译的文字', true); return; }
             const srcLang=srcLangSelect.value, tgtLang=tgtLangSelect.value;
-            if(srcLang===tgtLang) { showToast('源语言与目标语言相同',true); return; }
+            if(srcLang===tgtLang) { showToast('源语言与目标语言相同', true); return; }
             if(isTranslating && abortController) abortController.abort();
             const prompt = buildPrompt(srcLang, tgtLang, src, currentMode);
-            if(debugEnabled) debugAppendUser(`[翻译] ${srcLang} → ${tgtLang} (${currentMode==='fast'?'快速':'详细·母语解释'})`);
+            if(debugEnabled) debugAppendUser(`[翻译] ${srcLang} → ${tgtLang} (${currentMode==='fast'?'快速':'详细'})`);
             isTranslating=true;
             translateBtn.disabled=true;
             translateSpinner.style.display='inline-block';
@@ -807,7 +865,6 @@
             }
         }
 
-        // 标题点击解锁调试 (无任何提示文字)
         titleTrigger.addEventListener('click', () => {
             if(debugEnabled) return;
             const pwd = prompt("");
@@ -825,7 +882,7 @@
             if(debugMessagesDiv.children.length === 0) {
                 const welcome = document.createElement('div');
                 welcome.className = 'debug-message debug-ai';
-                welcome.innerHTML = `<div class="debug-bubble">调试控制台已就绪 / 智谱 GLM-Flash</div>`;
+                welcome.innerHTML = `<div class="debug-bubble">调试控制台已就绪</div>`;
                 debugMessagesDiv.appendChild(welcome);
             }
         });
@@ -834,6 +891,8 @@
         debugSendBtn.addEventListener('click', debugSendMessage);
         debugInput.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); debugSendMessage(); } });
         debugInput.addEventListener('input', function() { this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,80)+'px'; });
+
+        copyrightBtn.addEventListener('click', showCopyright);
 
         modeFast.addEventListener('click',()=>{ modeFast.classList.add('active'); modeDetail.classList.remove('active'); currentMode='fast'; });
         modeDetail.addEventListener('click',()=>{ modeDetail.classList.add('active'); modeFast.classList.remove('active'); currentMode='detail'; });
