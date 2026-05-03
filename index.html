@@ -34,25 +34,14 @@
             border: 1px solid #2a2a32;
         }
 
-        /* PC端固定高度 */
         @media (min-width: 761px) {
-            .translate-container {
-                height: 90vh;
-            }
+            .translate-container { height: 90vh; }
         }
-
-        /* 手机端高度自适应，允许滚动 */
         @media (max-width: 760px) {
-            body {
-                padding: 8px;
-                align-items: flex-start;
-            }
-            .translate-container {
-                margin: 8px 0;
-            }
+            body { padding: 8px; align-items: flex-start; }
+            .translate-container { margin: 8px 0; }
         }
 
-        /* 头部 */
         .tool-header {
             padding: 16px 24px;
             border-bottom: 1px solid #2a2a32;
@@ -65,24 +54,13 @@
             flex-shrink: 0;
         }
 
-        .clickable-title {
-            cursor: pointer;
-            user-select: none;
-            transition: opacity 0.2s;
-        }
-        .clickable-title:hover {
-            opacity: 0.8;
-        }
         .header-left h1 {
             color: white;
             font-size: 1.5rem;
             font-weight: 500;
             letter-spacing: 0.5px;
         }
-        .header-left h1 i {
-            margin-right: 8px;
-            color: #4a9eff;
-        }
+        .header-left h1 i { margin-right: 8px; color: #4a9eff; }
 
         .copyright-right {
             display: flex;
@@ -95,27 +73,12 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        .copyright-right:hover {
-            background: rgba(43, 82, 120, 0.4);
-            border-color: #4a9eff;
-        }
-        .copyright-right i {
-            color: #7ab7ff;
-            font-size: 0.8rem;
-        }
-        .copyright-right span {
-            color: #c0d4ff;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+        .copyright-right:hover { background: rgba(43, 82, 120, 0.4); border-color: #4a9eff; }
+        .copyright-right i { color: #7ab7ff; font-size: 0.8rem; }
+        .copyright-right span { color: #c0d4ff; font-size: 0.85rem; font-weight: 500; }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
 
-        /* 调试按钮 - 未激活时明显置灰 */
         .debug-btn {
             background-color: #4a4a5a;
             color: #aaa;
@@ -135,11 +98,8 @@
             pointer-events: auto;
             cursor: pointer;
         }
-        .debug-btn.active:hover {
-            background-color: #366b9e;
-        }
+        .debug-btn.active:hover { background-color: #366b9e; }
 
-        /* 双栏工作区 - PC端row，手机端column */
         .translation-workspace {
             flex: 1;
             padding: 24px;
@@ -149,8 +109,7 @@
             min-height: 0;
         }
 
-        .source-panel,
-        .target-panel {
+        .source-panel, .target-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -168,15 +127,24 @@
             flex-shrink: 0;
         }
 
-        .lang-selector {
+        .lang-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+        .lang-indicator i { color: #888; }
+
+        .target-lang-selector {
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
-        .lang-selector i { color: #888; font-size: 0.9rem; }
-        .lang-selector span { color: #aaa; font-size: 0.85rem; }
-        .lang-selector select {
+        .target-lang-selector i { color: #888; font-size: 0.9rem; }
+        .target-lang-selector span { color: #aaa; font-size: 0.85rem; }
+        .target-lang-selector select {
             background-color: #2c2c38;
             color: white;
             border: 1px solid #3e3e4a;
@@ -205,9 +173,7 @@
             outline: none;
             font-family: inherit;
         }
-        .source-textarea textarea::placeholder {
-            color: #4a4a5a;
-        }
+        .source-textarea textarea::placeholder { color: #4a4a5a; }
 
         .target-result {
             flex: 1;
@@ -228,7 +194,6 @@
             gap: 8px;
         }
 
-        /* 底部 */
         .translate-footer {
             padding: 16px 24px;
             border-top: 1px solid #2a2a32;
@@ -240,6 +205,7 @@
             gap: 16px;
             flex-shrink: 0;
         }
+
         .mode-selector {
             display: flex;
             gap: 8px;
@@ -262,10 +228,8 @@
             align-items: center;
             gap: 6px;
         }
-        .mode-btn.active {
-            background-color: #2b5278;
-            color: white;
-        }
+        .mode-btn.active { background-color: #2b5278; color: white; }
+
         .translate-actions {
             display: flex;
             gap: 12px;
@@ -319,12 +283,8 @@
             align-items: center;
             gap: 6px;
         }
-        .clear-btn:hover {
-            border-color: #666;
-            color: #ddd;
-        }
+        .clear-btn:hover { border-color: #666; color: #ddd; }
 
-        /* 加载动画 */
         .translate-spinner {
             display: none;
             width: 16px;
@@ -336,11 +296,36 @@
             margin-left: 4px;
             flex-shrink: 0;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .simple-password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            display: none;
+            z-index: 10000;
+        }
+        .simple-password-input {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e2e;
+            border: 1px solid #4a9eff;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 1rem;
+            width: 240px;
+            outline: none;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 10001;
         }
 
-        /* 全屏调试界面 */
         .debug-fullscreen {
             position: fixed;
             top: 0;
@@ -362,11 +347,7 @@
             align-items: center;
             flex-shrink: 0;
         }
-        .debug-header h3 {
-            color: #9cdcfe;
-            font-size: 1rem;
-            font-family: monospace;
-        }
+        .debug-header h3 { color: #9cdcfe; font-size: 1rem; font-family: monospace; }
         .debug-close {
             background: #1e1f2c;
             border: none;
@@ -385,21 +366,10 @@
             flex-direction: column;
             gap: 18px;
         }
-        .debug-message {
-            display: flex;
-            gap: 12px;
-            max-width: 90%;
-        }
-        .debug-user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-        .debug-ai {
-            align-self: flex-start;
-        }
-        .debug-avatar {
-            display: none;
-        }
+        .debug-message { display: flex; gap: 12px; max-width: 90%; }
+        .debug-user { align-self: flex-end; flex-direction: row-reverse; }
+        .debug-ai { align-self: flex-start; }
+        .debug-avatar { display: none; }
         .debug-user .debug-avatar {
             display: flex;
             width: 28px;
@@ -419,15 +389,8 @@
             color: #e2e8ff;
             word-break: break-word;
         }
-        .debug-user .debug-bubble {
-            background: #1e3a5f;
-            border-color: #2b5a8c;
-        }
-        .debug-time {
-            font-size: 0.6rem;
-            color: #6b7280;
-            margin-top: 4px;
-        }
+        .debug-user .debug-bubble { background: #1e3a5f; border-color: #2b5a8c; }
+        .debug-time { font-size: 0.6rem; color: #6b7280; margin-top: 4px; }
         .debug-thinking {
             padding: 8px 16px;
             background: #14161e;
@@ -480,7 +443,6 @@
             border-radius: 10px;
             cursor: pointer;
         }
-
         .custom-toast {
             position: fixed;
             bottom: 30px;
@@ -507,116 +469,46 @@
             85% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; visibility: hidden; }
         }
-
-        /* 手机端适配 */
         @media (max-width: 760px) {
-            body {
-                padding: 8px;
-                align-items: flex-start;
-            }
-            .translate-container {
-                margin: 8px 0;
-                border-radius: 24px;
-            }
-            .translation-workspace {
-                flex-direction: column;
-                gap: 16px;
-                padding: 16px;
-                overflow: visible;
-            }
-            .source-panel, .target-panel {
-                min-height: auto;
-                max-height: none;
-            }
-            .source-textarea {
-                min-height: 200px;
-            }
-            .target-result {
-                min-height: 200px;
-            }
-            .tool-header {
-                padding: 12px 16px;
-            }
-            .header-left h1 {
-                font-size: 1.2rem;
-            }
-            .mode-btn {
-                padding: 5px 16px;
-                font-size: 0.8rem;
-            }
-            .primary-btn, .copy-transparent-btn, .clear-btn {
-                padding: 6px 14px;
-                font-size: 0.8rem;
-            }
-            .debug-btn {
-                padding: 6px 14px;
-                font-size: 0.8rem;
-            }
-            .custom-toast {
-                white-space: normal;
-                text-align: center;
-                max-width: 85%;
-            }
+            .translation-workspace { flex-direction: column; gap: 16px; padding: 16px; overflow: visible; }
+            .source-textarea, .target-result { min-height: 200px; }
+            .tool-header { padding: 12px 16px; }
+            .header-left h1 { font-size: 1.2rem; }
+            .mode-btn { padding: 5px 16px; font-size: 0.8rem; }
+            .primary-btn, .copy-transparent-btn, .clear-btn { padding: 6px 14px; font-size: 0.8rem; }
+            .debug-btn { padding: 6px 14px; font-size: 0.8rem; }
+            .custom-toast { white-space: normal; text-align: center; max-width: 85%; }
         }
     </style>
 </head>
 <body>
 <div class="translate-container">
     <div class="tool-header">
-        <div class="header-left">
-            <div class="clickable-title" id="titleDebugTrigger">
-                <h1><i class="fas fa-language"></i> 翻译工具</h1>
-            </div>
-        </div>
+        <div class="header-left"><h1><i class="fas fa-language"></i> 翻译工具</h1></div>
         <div class="header-actions">
-            <div class="copyright-right" id="copyrightBtn">
-                <i class="fas fa-copyright"></i>
-                <span>@LongMoon</span>
-            </div>
+            <div class="copyright-right" id="copyrightBtn"><i class="fas fa-copyright"></i><span>@LongMoon</span></div>
             <button class="debug-btn" id="debugBtn" disabled>调试</button>
         </div>
     </div>
 
     <div class="translation-workspace">
         <div class="source-panel">
-            <div class="panel-header">
-                <div class="lang-selector">
-                    <i class="fas fa-file-alt"></i>
-                    <span>源语言</span>
-                    <select id="srcLangSelect">
-                        <option value="中文" selected>中文</option><option value="英文">英文</option><option value="日文">日文</option>
-                        <option value="韩文">韩文</option><option value="法文">法文</option><option value="德文">德文</option>
-                        <option value="俄文">俄文</option><option value="西班牙文">西班牙文</option><option value="阿拉伯文">阿拉伯文</option>
-                        <option value="葡萄牙文">葡萄牙文</option><option value="意大利文">意大利文</option><option value="荷兰文">荷兰文</option>
-                        <option value="瑞典文">瑞典文</option><option value="波兰文">波兰文</option><option value="土耳其文">土耳其文</option>
-                        <option value="泰文">泰文</option><option value="越南文">越南文</option><option value="印地文">印地文</option>
-                        <option value="希腊文">希腊文</option><option value="希伯来文">希伯来文</option>
-                    </select>
-                </div>
-            </div>
-            <div class="source-textarea">
-                <textarea id="srcText" placeholder="输入要翻译的文字..."></textarea>
-            </div>
+            <div class="panel-header"><div class="lang-indicator"><i class="fas fa-globe"></i><span>源语言 (自动检测)</span></div></div>
+            <div class="source-textarea"><textarea id="srcText" placeholder="输入要翻译的文字..."></textarea></div>
         </div>
         <div class="target-panel">
             <div class="panel-header">
-                <div class="lang-selector">
-                    <i class="fas fa-bullseye"></i>
-                    <span>目标语言</span>
+                <div class="target-lang-selector"><i class="fas fa-bullseye"></i><span>目标语言</span>
                     <select id="tgtLangSelect">
-                        <option value="英文" selected>英文</option><option value="中文">中文</option><option value="日文">日文</option>
-                        <option value="韩文">韩文</option><option value="法文">法文</option><option value="德文">德文</option>
-                        <option value="俄文">俄文</option><option value="西班牙文">西班牙文</option><option value="阿拉伯文">阿拉伯文</option>
-                        <option value="葡萄牙文">葡萄牙文</option><option value="意大利文">意大利文</option><option value="荷兰文">荷兰文</option>
-                        <option value="瑞典文">瑞典文</option><option value="波兰文">波兰文</option><option value="土耳其文">土耳其文</option>
-                        <option value="泰文">泰文</option><option value="越南文">越南文</option><option value="印地文">印地文</option>
-                        <option value="希腊文">希腊文</option><option value="希伯来文">希伯来文</option>
+                        <option value="英文" selected>英文</option><option value="中文">中文</option><option value="日文">日文</option><option value="韩文">韩文</option>
+                        <option value="法文">法文</option><option value="德文">德文</option><option value="俄文">俄文</option><option value="西班牙文">西班牙文</option>
+                        <option value="阿拉伯文">阿拉伯文</option><option value="葡萄牙文">葡萄牙文</option><option value="意大利文">意大利文</option><option value="荷兰文">荷兰文</option>
+                        <option value="瑞典文">瑞典文</option><option value="波兰文">波兰文</option><option value="土耳其文">土耳其文</option><option value="泰文">泰文</option>
+                        <option value="越南文">越南文</option><option value="印地文">印地文</option><option value="希腊文">希腊文</option><option value="希伯来文">希伯来文</option>
                     </select>
                 </div>
             </div>
-            <div class="target-result" id="targetResult">
-                <span class="placeholder-result"><i class="fas fa-arrow-right"></i> 翻译结果将显示在这里</span>
-            </div>
+            <div class="target-result" id="targetResult"><span class="placeholder-result"><i class="fas fa-arrow-right"></i> 翻译结果将显示在这里</span></div>
         </div>
     </div>
 
@@ -633,35 +525,26 @@
     </div>
 </div>
 
-<!-- 全屏调试界面 -->
+<div id="simplePasswordOverlay" class="simple-password-overlay">
+    <input type="password" id="simplePasswordInput" class="simple-password-input" placeholder="" autocomplete="off">
+</div>
+
 <div id="debugFullscreen" class="debug-fullscreen">
-    <div class="debug-header">
-        <h3><i class="fas fa-terminal"></i> DEBUG CONSOLE</h3>
-        <button class="debug-close" id="debugCloseBtn">✕</button>
-    </div>
+    <div class="debug-header"><h3><i class="fas fa-terminal"></i> DEBUG CONSOLE</h3><button class="debug-close" id="debugCloseBtn">✕</button></div>
     <div id="debugMessages" class="debug-messages"></div>
-    <div class="debug-input-area">
-        <div class="debug-input-row">
-            <textarea id="debugInput" class="debug-input" placeholder="$ 输入命令 / 对话..." rows="1"></textarea>
-            <button id="debugSendBtn" class="debug-send"><i class="fas fa-arrow-up"></i></button>
-        </div>
-    </div>
+    <div class="debug-input-area"><div class="debug-input-row"><textarea id="debugInput" class="debug-input" placeholder="$ 输入命令 / 对话..." rows="1"></textarea><button id="debugSendBtn" class="debug-send"><i class="fas fa-arrow-up"></i></button></div></div>
 </div>
 
 <script>
     (function() {
         const ZHIPU_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
         const FIXED_API_KEY = '20252a487bf4433dae034e4607626ff6.IZtAmpkRKydep2YR';
-        const DEBUG_PASSWORD = '114514';
 
-        let isTranslating = false;
-        let abortController = null;
-        let currentMode = 'fast';
-        let debugEnabled = false;
+        let isTranslating = false, abortController = null, currentMode = 'fast', debugEnabled = false;
+        let clickCount = 0, clickTimer = null, firstVerificationActive = false;
 
-        const srcLangSelect = document.getElementById('srcLangSelect');
-        const tgtLangSelect = document.getElementById('tgtLangSelect');
         const srcText = document.getElementById('srcText');
+        const tgtLangSelect = document.getElementById('tgtLangSelect');
         const targetResult = document.getElementById('targetResult');
         const translateBtn = document.getElementById('translateBtn');
         const clearBtn = document.getElementById('clearBtn');
@@ -671,13 +554,14 @@
         const modeDetail = document.getElementById('modeDetail');
         const translateSpinner = document.getElementById('translateSpinner');
         const debugBtn = document.getElementById('debugBtn');
-        const titleTrigger = document.getElementById('titleDebugTrigger');
         const copyrightBtn = document.getElementById('copyrightBtn');
         const debugFullscreen = document.getElementById('debugFullscreen');
         const debugCloseBtn = document.getElementById('debugCloseBtn');
         const debugMessagesDiv = document.getElementById('debugMessages');
         const debugInput = document.getElementById('debugInput');
         const debugSendBtn = document.getElementById('debugSendBtn');
+        const passwordOverlay = document.getElementById('simplePasswordOverlay');
+        const passwordInput = document.getElementById('simplePasswordInput');
 
         function showToast(msg, isError = false) {
             const old = document.querySelector('.custom-toast');
@@ -689,77 +573,42 @@
             setTimeout(() => toast.remove(), 2000);
         }
 
-        function showCopyright() {
-            const old = document.querySelector('.custom-toast');
-            if (old) old.remove();
-            const toast = document.createElement('div');
-            toast.className = 'custom-toast';
-            toast.innerHTML = `<i class="fas fa-copyright"></i> © 2025 LongMoon · 未经授权禁止转载或盗用代码`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
-        }
+        function showCopyright() { showToast('© 2025 LongMoon · 未经授权禁止转载或盗用代码'); }
 
         async function handleCopy() {
             let text = '';
-            if (targetResult.querySelector('.placeholder-result') && 
-                (!targetResult.innerText || targetResult.innerText.includes('翻译结果将显示在这里'))) {
-                showToast('没有可复制的内容', true);
-                return;
+            if (targetResult.querySelector('.placeholder-result') && (!targetResult.innerText || targetResult.innerText.includes('翻译结果将显示在这里'))) {
+                showToast('没有可复制的内容', true); return;
             }
             text = targetResult.innerText.trim();
-            if (!text || text === '翻译结果将显示在这里') {
-                showToast('暂无翻译结果', true);
-                return;
-            }
+            if (!text || text === '翻译结果将显示在这里') { showToast('暂无翻译结果', true); return; }
             try {
                 await navigator.clipboard.writeText(text);
                 const oldClass = copyIcon.className;
                 copyIcon.className = 'fas fa-check';
                 showToast('复制成功');
                 setTimeout(() => { copyIcon.className = oldClass; }, 1500);
-            } catch(e) {
-                showToast('复制失败', true);
-            }
+            } catch(e) { showToast('复制失败', true); }
         }
 
-        function debugGetTime() {
-            const d = new Date();
-            return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
-        }
-        function debugAppendUser(msg) {
-            const div = document.createElement('div');
-            div.className = 'debug-message debug-user';
-            div.innerHTML = `<div class="debug-avatar"><i class="fas fa-user"></i></div><div style="max-width:calc(100% - 44px)"><div class="debug-bubble">${escapeHtml(msg)}</div><div class="debug-time">${debugGetTime()}</div></div>`;
-            debugMessagesDiv.appendChild(div);
-            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
-        }
-        function debugShowThinking(show) {
-            const existing = document.querySelector('.debug-thinking-item');
-            if (existing) existing.remove();
-            if (!show) return;
-            const thinkDiv = document.createElement('div');
-            thinkDiv.className = 'debug-message debug-ai thinking-item';
-            thinkDiv.innerHTML = `<div class="debug-bubble debug-thinking"><div class="debug-dot-single"></div></div>`;
-            debugMessagesDiv.appendChild(thinkDiv);
-            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
-        }
-        let debugStreamingDiv = null, debugStreamingContent = null;
-        function debugCreateStreaming() {
-            if (debugStreamingDiv && debugStreamingDiv.isConnected) return;
-            debugStreamingDiv = document.createElement('div');
-            debugStreamingDiv.className = 'debug-message debug-ai';
-            debugStreamingDiv.innerHTML = `<div class="debug-bubble"></div><div class="debug-time" style="margin-left:12px">${debugGetTime()}</div>`;
-            debugStreamingContent = debugStreamingDiv.querySelector('.debug-bubble');
-            debugMessagesDiv.appendChild(debugStreamingDiv);
-            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
-        }
-        function debugUpdateStreaming(text) {
-            if (debugStreamingContent) debugStreamingContent.textContent += text;
-            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
-        }
-        function debugFinalizeStreaming() {
-            debugStreamingDiv = null;
-            debugStreamingContent = null;
+        // ========= 详细模式：强制详细 + 用源语言写长解释 =========
+        function buildPrompt(tgtLang, text, mode) {
+            if (mode === 'fast') {
+                return `请把以下内容翻译成${tgtLang}，只输出翻译结果，不要添加任何解释。\n\n原文：${text}`;
+            } else {
+                return `你是一个专业的翻译和语言教师。请严格按以下步骤输出：
+
+1. 将原文翻译成${tgtLang}，译文单独成行。
+2. 用【原文的语言】写出“重点词汇解析”。针对原文中至少2个重要的实词（名词/动词/形容词），分别解释它的含义、语气或语境。
+3. 用【原文的语言】写出“语法或句型说明”。分析原文中一个值得注意的语法点或固定句式。
+
+要求：
+- 必须使用原文的语言写解析和说明，严禁混入其他语言。
+- 不要只写一句话，每部分至少两到三行。
+- 各步骤之间用空行隔开。
+
+原文：${text}`;
+            }
         }
 
         async function callZhipuStream(prompt, onDelta, signal) {
@@ -798,20 +647,13 @@
             }
         }
 
-        function buildPrompt(srcLang, tgtLang, text, mode) {
-            if(mode==='fast') return `请将以下${srcLang}内容翻译成${tgtLang}，只输出翻译结果，不要添加任何解释。\n\n${srcLang}原文：${text}`;
-            const constraint = `你只能说${srcLang}。严禁使用${srcLang}之外的任何语言进行解释或描述。`;
-            return `${constraint}\n\n请将以下${srcLang}内容详细翻译成${tgtLang}，提供词汇解析、语法说明。全部解释使用${srcLang}输出。\n\n原文：${text}`;
-        }
-
         async function performTranslation() {
             const src = srcText.value.trim();
             if(!src) { showToast('请输入要翻译的文字', true); return; }
-            const srcLang=srcLangSelect.value, tgtLang=tgtLangSelect.value;
-            if(srcLang===tgtLang) { showToast('源语言与目标语言相同', true); return; }
+            const tgtLang = tgtLangSelect.value;
             if(isTranslating && abortController) abortController.abort();
-            const prompt = buildPrompt(srcLang, tgtLang, src, currentMode);
-            if(debugEnabled) debugAppendUser(`[翻译] ${srcLang} → ${tgtLang} (${currentMode==='fast'?'快速':'详细'})`);
+            const prompt = buildPrompt(tgtLang, src, currentMode);
+            if(debugEnabled) debugAppendUser(`[翻译] → ${tgtLang} (${currentMode==='fast'?'快速':'详细·强制源语言长解释'})`);
             isTranslating=true;
             translateBtn.disabled=true;
             translateSpinner.style.display='inline-block';
@@ -837,22 +679,47 @@
             }
         }
 
+        // 调试界面函数（与之前一样，略写核心）
+        function debugGetTime() { const d=new Date(); return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`; }
+        function debugAppendUser(msg) {
+            const div = document.createElement('div');
+            div.className = 'debug-message debug-user';
+            div.innerHTML = `<div class="debug-avatar"><i class="fas fa-user"></i></div><div style="max-width:calc(100% - 44px)"><div class="debug-bubble">${escapeHtml(msg)}</div><div class="debug-time">${debugGetTime()}</div></div>`;
+            debugMessagesDiv.appendChild(div);
+            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
+        }
+        function debugShowThinking(show) {
+            const existing = document.querySelector('.debug-thinking-item');
+            if (existing) existing.remove();
+            if (!show) return;
+            const thinkDiv = document.createElement('div');
+            thinkDiv.className = 'debug-message debug-ai thinking-item';
+            thinkDiv.innerHTML = `<div class="debug-bubble debug-thinking"><div class="debug-dot-single"></div></div>`;
+            debugMessagesDiv.appendChild(thinkDiv);
+            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
+        }
+        let debugStreamingDiv = null, debugStreamingContent = null;
+        function debugCreateStreaming() {
+            if (debugStreamingDiv && debugStreamingDiv.isConnected) return;
+            debugStreamingDiv = document.createElement('div');
+            debugStreamingDiv.className = 'debug-message debug-ai';
+            debugStreamingDiv.innerHTML = `<div class="debug-bubble"></div><div class="debug-time" style="margin-left:12px">${debugGetTime()}</div>`;
+            debugStreamingContent = debugStreamingDiv.querySelector('.debug-bubble');
+            debugMessagesDiv.appendChild(debugStreamingDiv);
+            debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight;
+        }
+        function debugUpdateStreaming(text) { if (debugStreamingContent) debugStreamingContent.textContent += text; debugMessagesDiv.scrollTop = debugMessagesDiv.scrollHeight; }
+        function debugFinalizeStreaming() { debugStreamingDiv = null; debugStreamingContent = null; }
         async function debugSendMessage() {
             const msg = debugInput.value.trim();
             if(!msg || !debugEnabled) return;
             debugAppendUser(msg);
-            debugInput.value = '';
-            debugInput.style.height='auto';
+            debugInput.value = ''; debugInput.style.height='auto';
             debugShowThinking(true);
             try{
                 let started=false;
                 await callZhipuStream(msg, (delta)=>{
-                    if(!started){ 
-                        const thinkItem = document.querySelector('.thinking-item');
-                        if(thinkItem) thinkItem.remove();
-                        started=true; 
-                        debugCreateStreaming(); 
-                    }
+                    if(!started){ const thinkItem = document.querySelector('.thinking-item'); if(thinkItem) thinkItem.remove(); started=true; debugCreateStreaming(); }
                     debugUpdateStreaming(delta);
                 }, null);
                 debugFinalizeStreaming();
@@ -865,15 +732,88 @@
             }
         }
 
-        titleTrigger.addEventListener('click', () => {
-            if(debugEnabled) return;
-            const pwd = prompt("");
-            if(pwd === DEBUG_PASSWORD) {
-                debugEnabled = true;
-                debugBtn.disabled = false;
-                debugBtn.classList.add('active');
-                showToast("调试已解锁", false);
+        // 双层验证（与最后一次正确版本一致）
+        function startFirstVerification() {
+            if (firstVerificationActive) return;
+            firstVerificationActive = true;
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'text';
+            hiddenInput.inputMode = 'numeric';
+            hiddenInput.style.position = 'fixed';
+            hiddenInput.style.top = '-100px';
+            hiddenInput.style.left = '-100px';
+            hiddenInput.style.opacity = '0';
+            hiddenInput.style.pointerEvents = 'none';
+            document.body.appendChild(hiddenInput);
+            hiddenInput.focus();
+            let buffer = '';
+            const onInput = (e) => {
+                const data = e.data;
+                if (data) {
+                    buffer += data;
+                    if (buffer === '54188') {
+                        cleanup();
+                        showSecondPasswordModal();
+                    } else if (!'54188'.startsWith(buffer)) {
+                        buffer = '';
+                    }
+                }
+            };
+            const onBlur = () => { cleanup(); };
+            const cleanup = () => {
+                hiddenInput.removeEventListener('input', onInput);
+                hiddenInput.removeEventListener('blur', onBlur);
+                hiddenInput.blur();
+                document.body.removeChild(hiddenInput);
+                firstVerificationActive = false;
+                resetClickCount();
+            };
+            hiddenInput.addEventListener('input', onInput);
+            hiddenInput.addEventListener('blur', onBlur);
+        }
+
+        function showSecondPasswordModal() {
+            passwordOverlay.style.display = 'block';
+            passwordInput.value = '';
+            passwordInput.focus();
+            const checkAndClose = () => {
+                if (passwordInput.value === '114514') {
+                    debugEnabled = true;
+                    debugBtn.disabled = false;
+                    debugBtn.classList.add('active');
+                    showToast("调试已解锁", false);
+                    closeModal();
+                }
+            };
+            const inputHandler = () => { checkAndClose(); };
+            passwordInput.addEventListener('input', inputHandler);
+            const outsideClickHandler = (e) => {
+                if (!passwordInput.contains(e.target)) {
+                    closeModal();
+                }
+            };
+            const escHandler = (e) => { if (e.key === 'Escape') closeModal(); };
+            function closeModal() {
+                passwordOverlay.style.display = 'none';
+                passwordInput.removeEventListener('input', inputHandler);
+                document.removeEventListener('click', outsideClickHandler);
+                document.removeEventListener('keydown', escHandler);
+                resetClickCount();
             }
+            document.addEventListener('click', outsideClickHandler);
+            document.addEventListener('keydown', escHandler);
+        }
+
+        function resetClickCount() { clickCount = 0; if (clickTimer) clearTimeout(clickTimer); clickTimer = null; }
+
+        clearBtn.addEventListener('click', () => {
+            srcText.value = '';
+            targetResult.innerHTML = '<span class="placeholder-result"><i class="fas fa-arrow-right"></i> 翻译结果将显示在这里</span>';
+            if (debugEnabled) return;
+            clickCount++;
+            if (clickTimer) clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { resetClickCount(); }, 800);
+            if (clickCount >= 5) { resetClickCount(); startFirstVerification(); }
         });
 
         debugBtn.addEventListener('click', () => {
@@ -893,12 +833,10 @@
         debugInput.addEventListener('input', function() { this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,80)+'px'; });
 
         copyrightBtn.addEventListener('click', showCopyright);
-
         modeFast.addEventListener('click',()=>{ modeFast.classList.add('active'); modeDetail.classList.remove('active'); currentMode='fast'; });
         modeDetail.addEventListener('click',()=>{ modeDetail.classList.add('active'); modeFast.classList.remove('active'); currentMode='detail'; });
         translateBtn.addEventListener('click', performTranslation);
         srcText.addEventListener('keydown', (e)=>{ if((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); performTranslation(); } });
-        clearBtn.addEventListener('click', ()=>{ srcText.value=''; targetResult.innerHTML='<span class="placeholder-result"><i class="fas fa-arrow-right"></i> 翻译结果将显示在这里</span>'; });
         copyBtn.addEventListener('click', handleCopy);
         function escapeHtml(str){ return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
     })();
