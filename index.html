@@ -62,6 +62,12 @@
         }
         .header-left h1 i { margin-right: 8px; color: #4a9eff; }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .copyright-right {
             display: flex;
             align-items: center;
@@ -77,15 +83,28 @@
         .copyright-right i { color: #7ab7ff; font-size: 0.8rem; }
         .copyright-right span { color: #c0d4ff; font-size: 0.85rem; font-weight: 500; }
 
-        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .about-btn {
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .about-btn:hover { background: #2b5a8c; }
 
         .debug-btn {
             background-color: #4a4a5a;
             color: #aaa;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 40px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: default;
             transition: 0.2s;
             opacity: 0.7;
@@ -194,6 +213,15 @@
             gap: 8px;
         }
 
+        /* 淡入动画 */
+        .fade-char {
+            animation: fadeInChar 1.7s ease-out forwards;
+        }
+        @keyframes fadeInChar {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         .translate-footer {
             padding: 16px 24px;
             border-top: 1px solid #2a2a32;
@@ -287,21 +315,6 @@
             50% { stroke-dasharray: 96.14, 113.1; }
         }
 
-        .cursor-loader {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #7e8aa2;
-            border-radius: 50%;
-            margin-left: 2px;
-            vertical-align: middle;
-            animation: cursorPulse 1s infinite;
-        }
-        @keyframes cursorPulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
         .copy-transparent-btn {
             background: transparent;
             border: 1px solid #4a6a8a;
@@ -339,8 +352,8 @@
         }
         .clear-btn:hover { border-color: #666; color: #ddd; }
 
-        /* 版权模态框 - 完整声明 */
-        .custom-modal-overlay {
+        /* 模态框通用样式 */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -352,7 +365,7 @@
             align-items: center;
             z-index: 11000;
         }
-        .custom-modal {
+        .modal-content {
             background: #1e1e2e;
             border: 1px solid #4a9eff;
             border-radius: 20px;
@@ -364,23 +377,23 @@
             line-height: 1.6;
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
         }
-        .custom-modal h3 {
+        .modal-content h3 {
             margin-bottom: 16px;
             font-size: 1.2rem;
             color: #7ab7ff;
         }
-        .custom-modal p {
+        .modal-content p {
             margin-bottom: 12px;
             text-align: left;
         }
-        .custom-modal .copyright-line {
+        .modal-content .divider {
             margin-top: 16px;
             padding-top: 12px;
             border-top: 1px solid #3a3a4a;
             font-size: 0.8rem;
             color: #8b9bb5;
         }
-        .custom-modal button {
+        .modal-content button {
             background: #2b5278;
             border: none;
             padding: 8px 28px;
@@ -390,7 +403,7 @@
             margin-top: 20px;
             font-size: 0.85rem;
         }
-        .custom-modal button:hover { background: #366b9e; }
+        .modal-content button:hover { background: #366b9e; }
 
         .simple-password-overlay {
             position: fixed;
@@ -579,9 +592,9 @@
             .header-left h1 { font-size: 1.2rem; }
             .mode-btn { padding: 5px 16px; font-size: 0.8rem; }
             .primary-btn, .copy-transparent-btn, .clear-btn { padding: 6px 14px; font-size: 0.8rem; }
-            .debug-btn { padding: 6px 14px; font-size: 0.8rem; }
+            .about-btn, .debug-btn { padding: 5px 12px; font-size: 0.75rem; }
             .custom-toast { white-space: normal; text-align: center; max-width: 85%; }
-            .custom-modal { padding: 20px 24px; max-width: 320px; }
+            .modal-content { padding: 20px 24px; max-width: 320px; }
         }
     </style>
 </head>
@@ -591,6 +604,7 @@
         <div class="header-left"><h1><i class="fas fa-language"></i> 翻译工具</h1></div>
         <div class="header-actions">
             <div class="copyright-right" id="copyrightBtn"><i class="fas fa-copyright"></i><span>@LongMoon</span></div>
+            <button class="about-btn" id="aboutBtn"><i class="fas fa-info-circle"></i> 关于</button>
             <button class="debug-btn" id="debugBtn" disabled>调试</button>
         </div>
     </div>
@@ -638,15 +652,24 @@
     </div>
 </div>
 
-<!-- 版权模态框 - 完整版 -->
-<div id="copyrightModal" class="custom-modal-overlay">
-    <div class="custom-modal">
-        <h3>© LongMoon</h3>
-        <p>本翻译工具由 LongMoon 独立开发，基于DeepSeek AI 大模型提供翻译能力。</p>
+<!-- 关于模态框 -->
+<div id="aboutModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>📄 关于</h3>
+        <p>本翻译工具由 LongMoon 独立开发，基于智谱 AI 大模型提供翻译能力。</p>
         <p>翻译结果由人工智能自动生成，不保证 100% 准确，请结合上下文谨慎使用。对于关键内容，建议人工复核。</p>
         <p>未经授权，禁止将本工具的全部或部分代码用于商业用途、二次分发或盗用。</p>
-        <div class="copyright-line"></div>
-        <button id="closeModalBtn">确 认</button>
+        <div class="divider">© 2025 LongMoon</div>
+        <button id="closeAboutBtn">关闭</button>
+    </div>
+</div>
+
+<!-- 版权模态框（简短） -->
+<div id="copyrightModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>© LongMoon</h3>
+        <p>未经授权禁止转载或盗用代码<br>个人使用不受限制</p>
+        <button id="closeCopyrightBtn">关闭</button>
     </div>
 </div>
 
@@ -691,8 +714,11 @@
         const translateSpinner = document.getElementById('translateSpinner');
         const debugBtn = document.getElementById('debugBtn');
         const copyrightBtn = document.getElementById('copyrightBtn');
+        const aboutBtn = document.getElementById('aboutBtn');
+        const aboutModal = document.getElementById('aboutModal');
+        const closeAboutBtn = document.getElementById('closeAboutBtn');
         const copyrightModal = document.getElementById('copyrightModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeCopyrightBtn = document.getElementById('closeCopyrightBtn');
         const debugFullscreen = document.getElementById('debugFullscreen');
         const debugCloseBtn = document.getElementById('debugCloseBtn');
         const debugMessagesDiv = document.getElementById('debugMessages');
@@ -713,9 +739,17 @@
             setTimeout(() => toast.remove(), 2000);
         }
 
+        // 模态框控制
+        function showAboutModal() { aboutModal.style.display = 'flex'; }
+        function closeAboutModal() { aboutModal.style.display = 'none'; }
         function showCopyrightModal() { copyrightModal.style.display = 'flex'; }
-        closeModalBtn.addEventListener('click', () => { copyrightModal.style.display = 'none'; });
-        copyrightModal.addEventListener('click', (e) => { if(e.target === copyrightModal) copyrightModal.style.display = 'none'; });
+        function closeCopyrightModal() { copyrightModal.style.display = 'none'; }
+        aboutBtn.addEventListener('click', showAboutModal);
+        closeAboutBtn.addEventListener('click', closeAboutModal);
+        aboutModal.addEventListener('click', (e) => { if(e.target === aboutModal) closeAboutModal(); });
+        copyrightBtn.addEventListener('click', showCopyrightModal);
+        closeCopyrightBtn.addEventListener('click', closeCopyrightModal);
+        copyrightModal.addEventListener('click', (e) => { if(e.target === copyrightModal) closeCopyrightModal(); });
 
         async function handleCopy() {
             if (isTranslating) { showToast('翻译中，请稍后复制', true); return; }
@@ -805,12 +839,12 @@
             if(onEnd) onEnd();
         }
 
-        let resultCursor = null;
-        function showResultCursor() { if (!resultCursor) { resultCursor = document.createElement('span'); resultCursor.className = 'cursor-loader'; targetResult.appendChild(resultCursor); } }
-        function hideResultCursor() { if (resultCursor) { resultCursor.remove(); resultCursor = null; } }
-        function updateResult(delta) {
-            if (resultCursor) resultCursor.insertAdjacentHTML('beforebegin', delta.replace(/\n/g, '<br>'));
-            else targetResult.innerHTML += delta.replace(/\n/g, '<br>');
+        // 淡入输出（每个字符块整体淡入，无光标）
+        function appendFadeContent(htmlContent) {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'fade-char';
+            wrapper.innerHTML = htmlContent;
+            targetResult.appendChild(wrapper);
             targetResult.scrollTop = targetResult.scrollHeight;
         }
 
@@ -827,21 +861,18 @@
             translateSpinner.style.display = 'inline-block';
             targetResult.innerHTML = '';
             abortController=new AbortController();
-            let started=false;
             try{
                 await callZhipuStream(prompt, 
                     (delta) => {
-                        if(!started){ started=true; showResultCursor(); }
-                        updateResult(delta);
+                        appendFadeContent(delta.replace(/\n/g, '<br>'));
                         if(debugEnabled && debugStreamingContent) debugUpdateStreaming(delta);
                         else if(debugEnabled && !debugStreamingDiv) { debugCreateStreaming(); debugUpdateStreaming(delta); }
                     },
-                    () => { hideResultCursor(); },
+                    null,
                     abortController.signal
                 );
                 if(debugEnabled) debugFinalizeStreaming();
             }catch(err){
-                hideResultCursor();
                 if(err.name==='AbortError') targetResult.innerHTML='<span style="color:#ffaa66;"><i class="fas fa-ban"></i> 已取消</span>';
                 else targetResult.innerHTML=`<span style="color:#f77;"><i class="fas fa-exclamation-triangle"></i> 失败: ${err.message}</span>`;
                 if(debugEnabled && debugStreamingContent) debugUpdateStreaming(`\n[错误] ${err.message}`);
@@ -851,6 +882,7 @@
             }
         }
 
+        // 调试界面函数（控制台等待动画保持单点）
         function debugGetTime() { const d=new Date(); return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`; }
         function debugAppendUser(msg) {
             const div = document.createElement('div');
@@ -1044,7 +1076,6 @@
         debugInput.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); debugSendMessage(); } });
         debugInput.addEventListener('input', function() { this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,80)+'px'; });
 
-        copyrightBtn.addEventListener('click', showCopyrightModal);
         modeFast.addEventListener('click',()=>{ modeFast.classList.add('active'); modeDetail.classList.remove('active'); currentMode='fast'; });
         modeDetail.addEventListener('click',()=>{ modeDetail.classList.add('active'); modeFast.classList.remove('active'); currentMode='detail'; });
         translateBtn.addEventListener('click', performTranslation);
